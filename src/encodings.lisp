@@ -291,26 +291,26 @@ a CHARACTER-ENCONDING object, it is returned unmodified."
                collect
                `(let ((cm (make-instance 'concrete-mapping)))
                   (setf (encoder cm)
-                        ,(instantiate-encoder encoding am
-                                              code-point-seq-getter
-                                              code-point-seq-type
-                                              octet-seq-setter
-                                              octet-seq-type))
+                        (compile NIL ,(instantiate-encoder encoding am
+                                                           code-point-seq-getter
+                                                           code-point-seq-type
+                                                           octet-seq-setter
+                                                           octet-seq-type)))
                   ,(when instantiate-decoders
                      `(progn
                         (setf (decoder cm)
-                              ,(instantiate-decoder encoding am
-                                                    octet-seq-getter
-                                                    octet-seq-type
-                                                    code-point-seq-setter
-                                                    code-point-seq-type))
+                              (compile NIL ,(instantiate-decoder encoding am
+                                                                 octet-seq-getter
+                                                                 octet-seq-type
+                                                                 code-point-seq-setter
+                                                                 code-point-seq-type)))
                         (setf (code-point-counter cm)
-                              ,(instantiate-code-point-counter
-                                encoding am octet-seq-getter octet-seq-type))))
+                              (compile NIL ,(instantiate-code-point-counter
+                                             encoding am octet-seq-getter octet-seq-type)))))
                   (setf (octet-counter cm)
-                        ,(instantiate-octet-counter encoding am
-                                                    code-point-seq-getter
-                                                    code-point-seq-type))
+                        (compile NIL ,(instantiate-octet-counter encoding am
+                                                                 code-point-seq-getter
+                                                                 code-point-seq-type)))
                   (notice-mapping ,encoding-name cm))))
      ht))
 
